@@ -1,0 +1,15 @@
+@import './dashboard-styles';
+@import './home-styles';
+
+$backgroundColor: #fffffc;
+$bodyFont: 'Cabin', Sans-Serif;
+*{
+    margin: 0px;
+}
+body {
+    background-color: $backgroundColor;
+    font-family: $bodyFont;
+    font-weight: 400;
+    line-height: 1.75;
+}
+
