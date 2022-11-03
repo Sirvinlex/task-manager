@@ -1,0 +1,51 @@
+$backgroundColor: #fffffc;
+$btnColor-1: #345eeb;
+
+.hide-form{
+    display: none;
+}
+.show-form{
+    display: flex;
+    flex-direction: column;
+}
+.reg-page-container{
+    background-color: #e9f4f7;
+    height: 100vh;
+    padding: 50px 20px 0px 20px;
+}
+.form-container{
+    background-color: $backgroundColor;
+    height: 90vh;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px 5px #cbd0d1;
+}
+hr {
+    background-color: $btnColor-1;
+    border: none;
+    height: 5px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.logo{
+    color: $btnColor-1;
+    margin-top: 15px;
+    text-align: center;
+}
+.form-title{
+    text-align: center;
+}
+.login-form, .register-form{
+
+    p{
+        margin-top: 15px;
+        display: flex;
+        flex-direction: column;
+    }
+}
+.personal-account-form, 
+.personal-account-toggle, 
+.group-account-toggle,
+.group-account-form{
+    margin-left: 10px;
+    margin-right: 10px;
+}

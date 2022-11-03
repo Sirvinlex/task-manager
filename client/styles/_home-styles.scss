@@ -1,16 +1,53 @@
+$btnColor-1: #345eeb;
+$btnColor-2: #38d694;
+
 .home-page-container{
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 50% 50%;
-    margin: 20px;
+    grid-template-rows: auto auto;
+    margin: 50px;
+    div  {
+            color: #25798a;
+        }
 }
 .home-grid-one{
-    border: solid black;
-    // height: 100vh;
-    background-color: red;
+    height: auto;
 }
 .home-grid-two{
-    border: solid black;
-    // height: 100vh;
-    background-color: red;
+    height: auto;
+}
+.get-started-btn{
+    background-color: $btnColor-1;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 100px;
+    color: white;
+    cursor: pointer;
+}
+.register-btn{
+    background-color: $btnColor-2;
+    border: none;
+    border-radius: 5px;
+    height: 30px;
+    width: 100px;
+    color: white;
+    cursor: pointer;
+}
+.home-img-1{
+    width: 100%;
+}
+.home-img-2 {
+    width: 100%;
+}
+
+@media only screen and (min-width: 992px) {
+    .home-page-container {
+        display: grid;
+        grid-template-columns: 50% 50%;
+        grid-template-rows: 100%;
+    }
+    .home-img-2 {
+        height: 80%;
+    }
 }
