@@ -109,6 +109,73 @@ hr {
   height: 50px;
 }
 
+.create-task-btn {
+  border: none;
+  background-color: black;
+  color: white;
+  height: 40px;
+  width: 100px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.create-task-form_container {
+  height: 96vh;
+  width: 96vw;
+  background-color: rgba(56, 52, 52, 0.6);
+  border-radius: 5px;
+}
+
+.hide-task-form {
+  display: none;
+}
+
+.show-task-form {
+  display: block;
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+}
+
+.task-form-container {
+  background-color: #fffffc;
+  height: 40%;
+  width: 80%;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px 5px #cbd0d1;
+  color: #55616b;
+  margin: auto;
+  position: relative;
+  top: 27%;
+}
+.task-form-container input {
+  height: 25px;
+  color: #55616b;
+  background-color: #e9f4f7;
+  border-radius: 5px;
+}
+
+.task-form {
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+}
+
+.submit-task-btn {
+  background-color: #345eeb;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  height: 30px;
+  width: 100%;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
 .dashboard-container {
   height: 100%;
   background-color: white;
@@ -220,6 +287,35 @@ hr {
   border: none;
 }
 
+@media only screen and (min-width: 600px) {
+  .task-form-container {
+    width: 60%;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .create-task-form_container {
+    width: 100vw;
+    height: 100vh;
+  }
+  .task-form-container {
+    width: 45%;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .create-task-form_container {
+    width: 100vw;
+    height: 100vh;
+  }
+  .create-task-form_container input {
+    height: 35px;
+  }
+  .task-form-container {
+    width: 40%;
+  }
+  .submit-task-btn {
+    height: 40px;
+  }
+}
 .home-page-container {
   display: grid;
   grid-template-columns: 100%;

@@ -8,7 +8,24 @@
     <title>Dashboard</title>
 </head>
 <body class="dashboard">
-    <nav class="dashboard-nav"></nav>
+    <nav class="dashboard-nav">
+        <button class="create-task-btn" type="button">Create New Task</button>
+    </nav>
+    <div class="create-task-form_container hide-task-form">
+        <button class="close-task-form" type="button">close</button>
+        <div class="task-form-container">
+            <hr />
+            <h1 class="form-title">Create Task</h1>
+            <form class="task-form">
+                <!-- remove start task field, will implement it in the full project -->
+                
+                <label for='task'>Task Name</label>
+                <input class="task-name" type='text' name='task' value='' id='task' />
+                
+                <button class="submit-task-btn" type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
     <div class="dashboard-container">
         <div class="title-date-container">
             <h2>All Tasks</h2> <span>todays date</span>
@@ -70,6 +87,9 @@
             </div>
         </div>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+        integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="../js/dashboard.js"></script>
 </body>
 </html>

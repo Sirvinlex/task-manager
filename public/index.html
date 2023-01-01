@@ -4,14 +4,111 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/style.css" />
-    <title>Task Manager</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+    <title>Login-Register</title>
 </head>
 <body>
-    <div class="root">
-        
-        <div id="main-page"></div>
+    
+    <!-- <a href="/dashboard" onclick="route()">register</a> -->
+    <div class="reg-page-container">
+        <div class="form-container">
+            <hr />
+            <h1 class="logo">Task Manager</h1>
+            <h1 class="form-title">Login</h1>
+            <h5 class="tes"></h5>
+            <!-- <h4 class="show-form group-account-toggle">
+                <span>
+                    Register/Login Group Account
+                    <button class="group-account-toggle_btn" type="button"><h3>Here</h3></button>
+                </span>
+            </h4>
+            <h4 class="hide-form personal-account-toggle">
+                <span>
+                    Register/Login Personal Account
+                    <button class="personal-account-toggle_btn" type="button"><h3>Here</h3></button>
+                </span>
+            </h4> -->
+            <div class="personal-account-form show-form">
+                <form class="auth-form">
+                    <div class="login-form show-form">
+                        <p>
+                            <label for='login-email'>Email</label>
+                            <input type='email'  id='login-email' class="login-email"/>
+                        </p>
+                        <p>
+                            <label for='login-password'>Password</label>
+                            <input type='password' id='login-password' class="login-password"/>
+                        </p>
+                    </div>
+                
+                    <div class="register-form hide-form">
+                        <p>
+                            <label for='name'>Name</label>
+                            <input type='text' id='name' class="register-name"/>
+                        </p>
+                        <p>
+                            <label for='email'>Email</label>
+                            <input type='email'  id='email' class="register-email"/>
+                        </p>
+                        <p>
+                            <label for='password'>Password</label>
+                            <input type='password'  id='password' class="register-password"/>
+                        </p>
+                    </div>
+                    <button type="submit" class="submit-btn" >Submit</button>
+                </form>
+                <div>
+                    <p class="form-toggle-1 show-form">
+                        <span>Don't have an account? <button class="toggle-form_btn1" type="button">Register</button></span> 
+                    </p>
+                    <p class="form-toggle-2 hide-form">
+                        <span>Already have an account? <button class="toggle-form_btn2" type="button">Login</button></span>  
+                    </p>
+                </div>
+            </div>
+            <!-- <div class="group-account-form hide-form">
+                <form>
+                    <div class="login-form show-form">
+                        <p>
+                            <label for='email'>Group Email</label>
+                            <input type='email' name='email' value='' id='email' />
+                        </p>
+                        <p>
+                            <label for='password'>Group Password</label>
+                            <input type='password' name='password' value='' id='password' />
+                        </p>
+                    </div>
+                
+                    <div class="register-form hide-form">
+                        <p>
+                            <label for='name'>Group Name</label>
+                            <input type='text' name='name' value='' id='name' />
+                        </p>
+                        <p>
+                            <label for='email'>Group Email</label>
+                            <input type='email' name='email' value='' id='email' />
+                        </p>
+                        <p>
+                            <label for='password'>Group Password</label>
+                            <input type='password' name='password' value='' id='password' />
+                        </p>
+                    </div>
+                    <button class="submit-btn" type="submit">Submit</button>
+                </form>
+                <div>
+                    <p class="form-toggle-1 show-form">
+                        <span>Don't have a group account? <button class="toggle-form_btn1" type="button">Register</button></span>    
+                    </p>
+                    <p class="form-toggle-2 hide-form">
+                        <span>Already have a group account? <button class="toggle-form_btn2" type="button">Login</button></span> 
+                    </p>
+                </div>
+            </div> -->
+        </div>
     </div>
-    <script src="js/router.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
+        integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="./js/user.js"></script>
 </body>
 </html>

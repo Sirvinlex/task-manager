@@ -1,11 +1,12 @@
 const express = require('express');
-const { getAllTasks, updateToCompletedTask, updateToPendingTask, deleteTask } = require('../controllers/tasks')
+const { getAllTasks, updateToCompletedTask, updateTask, deleteTask, createTask } = require('../controllers/tasks')
 const router = express.Router();
 
 router.get('/getAllTasks', getAllTasks);
-router.patch('/updateToPendingTask/:id', updateToPendingTask);
+router.post('/createTask', createTask);
+router.patch('/updateTask/:id', updateTask);
 router.get('/updateToCompletedTask/:id', updateToCompletedTask);
-router.get('/deleteTask/:id', deleteTask);
+router.delete('/deleteTask/:id', deleteTask);
 
 module.exports = router;
  
