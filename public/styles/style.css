@@ -226,6 +226,7 @@ hr {
   border-radius: 5px;
   margin: 10px;
   padding: 5px;
+  position: relative;
 }
 
 .current-task {
@@ -235,6 +236,7 @@ hr {
   border-radius: 5px;
   margin: 10px;
   padding: 5px;
+  position: relative;
 }
 
 .completed-task {
@@ -249,22 +251,34 @@ hr {
 .main-task-btn_container {
   display: flex;
   justify-content: space-between;
-  margin-top: 10px;
+  position: absolute;
+  bottom: 7px;
 }
 
 .delete-task-btn {
   border: none;
-  background-color: white;
-  color: red;
+  background-color: rgb(190, 69, 53);
+  color: white;
   border-radius: 3px;
   cursor: pointer;
   box-shadow: 2px 2px 2px 2px #6d7273;
+  margin-left: 5px;
+}
+
+.edit-task-btn {
+  border: none;
+  background-color: rgb(72, 72, 180);
+  color: white;
+  border-radius: 3px;
+  cursor: pointer;
+  box-shadow: 2px 2px 2px 2px #6d7273;
+  margin-left: 5px;
 }
 
 .task-btn {
   border: none;
-  background-color: white;
-  color: rgb(61, 71, 219);
+  background-color: rgb(76, 177, 81);
+  color: white;
   border-radius: 3px;
   cursor: pointer;
   box-shadow: 2px 2px 2px 2px #6d7273;
