@@ -1,3 +1,7 @@
+const searchBtn1 = document.querySelector(".search-btn1");
+const searchBtn2 = document.querySelector(".search-btn2");
+const searchInput1DOM = document.querySelector(".search-input1");
+const searchInput2DOM = document.querySelector(".search-input2");
 const pendingTaskContainer = document.querySelector(".pending-tasks-container");
 const currentTaskContainer = document.querySelector(".current-tasks-container");
 const completedTaskContainer = document.querySelector(".completed-tasks-container");
@@ -14,6 +18,11 @@ const dashboardPendingTaskCount = document.querySelector("#pending-task-count");
 const dashboardCurrentTaskCount = document.querySelector("#current-task-count");
 const dashboardCompletedTaskCount = document.querySelector("#completed-task-count");
 const taskFormTitle = document.querySelector(".form-title");
+const loading = document.querySelector(".loading");
+const userName = document.querySelector(".user-name");
+const currentDate = document.querySelector(".date");
+const allTasks = document.querySelector(".all-tasks");
+
 // const deleteTaskBtn = document.querySelector("delete-task-btn");
 
 // const page = pageNumber || '1';
@@ -23,12 +32,22 @@ const taskFormTitle = document.querySelector(".form-title");
 
 let editingTask = false;
 let editTaskId;
+let isPendingTask = true;
+let isCurrentTask = false;
+let isCompletedTask = false;
 
+function getUser() {
+    const localStorageUser = localStorage.getItem('user');
+    const user = JSON.parse(localStorageUser);
+    userName.textContent = user.name
+    const date = moment().format('DD-MM-YYYY');
+    currentDate.textContent = date;
+};
+getUser();
 
 function deleteTask(taskId,) {
                 const localStorageUser = localStorage.getItem('user');
                 const user = JSON.parse(localStorageUser);
-                console.log(user.token)
                 axios.delete(`http://localhost:5000/api/v1/tasks/deleteTask/${taskId}`, {
                     headers: {
                         authorization: `Bearer ${user.token}`
@@ -54,21 +73,36 @@ function editTask(taskId, status, taskName) {
 
 };
 
-function fetchPendingTasks(status) {
+searchBtn1.addEventListener('click', (e) =>{
+    searchQuery = searchInput1DOM.value;
+    if(isPendingTask){
+        fetchPendingTasks('pending', searchQuery);
+    } 
+    if(isCurrentTask){
+        fetchPendingTasks('current', searchQuery);
+    }
+    if(isCompletedTask){
+        fetchPendingTasks('completed', searchQuery);
+    }
+})
+
+function fetchPendingTasks(status, searchQuery) {
+    loading.classList.add('show-loading');
+    loading.classList.remove('hide-loading');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
-    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}`, {
+    const search = searchQuery || '';
+    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
             headers: {
                 authorization: `Bearer ${user.token}`
             }
         })
         .then(response => {
-            const {tasks, numberOfPages, totalTasks} = response.data;
-            
+            const { tasks, numberOfPages, totalTasks} = response.data;
+            console.log(tasks)
             let pendingTasks;
             
             pendingTasks = tasks;
-console.log(pendingTasks)
             pendingTasks.map((task) =>{
             const taskId = task._id;
             const pendingTaskName = task.taskName;
@@ -105,7 +139,7 @@ console.log(pendingTasks)
             editTaskBtn.setAttribute('name', `${pendingTaskName}`);
             editTaskBtn.setAttribute('id', `${taskId}`);
 
-            taskBtnContainer.append(startTaskBtn, deleteTaskBtn, editTaskBtn);
+            taskBtnContainer.append(startTaskBtn, editTaskBtn, deleteTaskBtn);
             deleteTaskBtn.addEventListener('click', (e) =>{
                 const taskId = e.target.id;
                 
@@ -131,20 +165,33 @@ console.log(pendingTasks)
             });
 
             pendingTask.append(createdAt, name, status, taskBtnContainer);
-            return (
-                pendingTaskContainer.append(pendingTask)
-            )
+            
+            
+            return pendingTaskContainer.append(pendingTask)
+        
+            // else if (!tasks){
+            //     loading.classList.add('show-loading');
+            //     loading.classList.remove('hide-loading');
+            // }
+            
         })
+
+        loading.classList.remove('show-loading');
+        loading.classList.add('hide-loading');
 
         })
         .catch(error => console.error(error))
 }
 fetchPendingTasks('pending');
 
-function fetchCurrentTasks(status) {
+function fetchCurrentTasks(status, searchQuery) {
+    
+    const search = searchQuery || '';
+    loading.classList.add('show-loading');
+    loading.classList.remove('hide-loading');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
-    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}`, {
+    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
             headers: {
                 authorization: `Bearer ${user.token}`
             }
@@ -208,15 +255,21 @@ function fetchCurrentTasks(status) {
             )
         })
 
+        loading.classList.remove('show-loading');
+        loading.classList.add('hide-loading');
 
         })
         .catch(error => console.error(error))
 }
 
-function fetchCompletedTasks(status) {
+function fetchCompletedTasks(status, searchQuery) {
+    
+    const search = searchQuery || '';
+    loading.classList.add('show-loading');
+    loading.classList.remove('hide-loading');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
-    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}`, {
+    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
             headers: {
                 authorization: `Bearer ${user.token}`
             }
@@ -260,7 +313,8 @@ function fetchCompletedTasks(status) {
             )
         })
 
-
+        loading.classList.remove('show-loading');
+        loading.classList.add('hide-loading');
 
         })
         .catch(error => console.error(error))
@@ -274,11 +328,12 @@ function fetchTasks () {
             }
         })
         .then(response => {
-        const { pendingTaskCount, currentTaskCount, completedTaskCount} = response.data;
+        const { pendingTaskCount, currentTaskCount, completedTaskCount, totalTasks} = response.data;
         
         dashboardPendingTaskCount.textContent = pendingTaskCount;
         dashboardCurrentTaskCount.textContent = currentTaskCount;
         dashboardCompletedTaskCount.textContent = completedTaskCount;
+        allTasks.textContent = `All Tasks: ${totalTasks}`
         
         }).catch(error => console.error(error));
 
@@ -339,6 +394,9 @@ closeTaskForm.addEventListener("click", () =>{
     })
 
 pendingTaskBtn.addEventListener("click", () =>{
+    isPendingTask = true;
+    isCurrentTask = false;
+    isCompletedTask = false;
     pendingTaskContainer.classList.add("show-task");
     pendingTaskContainer.classList.remove("hide-task");
     currentTaskContainer.classList.remove("show-task");
@@ -355,6 +413,9 @@ pendingTaskBtn.addEventListener("click", () =>{
     fetchTasks();
 })
 currentTaskBtn.addEventListener("click", () =>{
+    isPendingTask = false;
+    isCurrentTask = true;
+    isCompletedTask = false;
     currentTaskContainer.classList.add("show-task");
     currentTaskContainer.classList.remove("hide-task");
     pendingTaskContainer.classList.remove("show-task");
@@ -371,6 +432,9 @@ currentTaskBtn.addEventListener("click", () =>{
     fetchTasks();
 })
 completedTaskBtn.addEventListener("click", () =>{
+    isPendingTask = false;
+    isCurrentTask = false;
+    isCompletedTask = true;
     completedTaskContainer.classList.add("show-task");
     completedTaskContainer.classList.remove("hide-task");
     pendingTaskContainer.classList.remove("show-task");

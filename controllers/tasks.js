@@ -5,7 +5,7 @@ const Task = require("../models/task");
 const getAllTasks = async(req, res) =>{
     const { status, search } = req.query;
     const queryObject = {createdBy: req.user.userId,};
-
+console.log(status, search)
     try {
         
         if (search) {

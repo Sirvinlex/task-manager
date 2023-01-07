@@ -21,7 +21,7 @@ const registrationNameInputDOM = document.querySelector(".register-name");
 const registrationEmailInputDOM = document.querySelector(".register-email");
 const registrationPasswordInputDOM = document.querySelector(".register-password");
 const submitAuthDetailsBtn = document.querySelector(".submit-btn");
-const tes = document.querySelector(".tes");
+
 
 // const API = axios.create({baseURL: 'http://localhost:5000/api/v1/auth/registerUser' });
 // export const registerUser = (regData) => API.post('/user/registerUser', regData)
@@ -45,6 +45,7 @@ authFormDOM.addEventListener('submit', (e) => {
             const user = response.data;
             localStorage.setItem('user', JSON.stringify(user))
             console.log(`POST: user is added`, user);
+            
             })
             .catch(error => console.error(error));
 
