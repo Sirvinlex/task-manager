@@ -1,7 +1,7 @@
 const searchBtn1 = document.querySelector(".search-btn1");
 const searchBtn2 = document.querySelector(".search-btn2");
-const searchInput1DOM = document.querySelector(".search-input1");
-const searchInput2DOM = document.querySelector(".search-input2");
+const searchInputDOM1 = document.querySelector(".search-input1");
+const searchInputDOM2 = document.querySelector(".search-input2");
 const pendingTaskContainer = document.querySelector(".pending-tasks-container");
 const currentTaskContainer = document.querySelector(".current-tasks-container");
 const completedTaskContainer = document.querySelector(".completed-tasks-container");
@@ -19,6 +19,7 @@ const dashboardCurrentTaskCount = document.querySelector("#current-task-count");
 const dashboardCompletedTaskCount = document.querySelector("#completed-task-count");
 const taskFormTitle = document.querySelector(".form-title");
 const loading = document.querySelector(".loading");
+const noTask = document.querySelector(".no-task");
 const userName = document.querySelector(".user-name");
 const currentDate = document.querySelector(".date");
 const allTasks = document.querySelector(".all-tasks");
@@ -73,22 +74,45 @@ function editTask(taskId, status, taskName) {
 
 };
 
-searchBtn1.addEventListener('click', (e) =>{
-    searchQuery = searchInput1DOM.value;
+function searchTask(searchQuery){
+    
     if(isPendingTask){
+        while (pendingTaskContainer.hasChildNodes()) {
+        pendingTaskContainer.removeChild(pendingTaskContainer.firstChild);
+        }
         fetchPendingTasks('pending', searchQuery);
     } 
     if(isCurrentTask){
-        fetchPendingTasks('current', searchQuery);
+        while (currentTaskContainer.hasChildNodes()) {
+        currentTaskContainer.removeChild(currentTaskContainer.firstChild);
+        }
+        fetchCurrentTasks('current', searchQuery);
     }
     if(isCompletedTask){
-        fetchPendingTasks('completed', searchQuery);
+        while (completedTaskContainer.hasChildNodes()) {
+        completedTaskContainer.removeChild(completedTaskContainer.firstChild);
+        }
+        fetchCompletedTasks('completed', searchQuery);
     }
-})
+    
+};
+
+searchBtn1.addEventListener('click', () =>{
+    searchQuery = searchInputDOM1.value;
+    searchTask(searchQuery);
+    searchInputDOM1.value = '';
+});
+searchBtn2.addEventListener('click', () => {
+    searchQuery = searchInputDOM2.value;
+    searchTask(searchQuery);
+    searchInputDOM2.value = '';
+} );
 
 function fetchPendingTasks(status, searchQuery) {
     loading.classList.add('show-loading');
     loading.classList.remove('hide-loading');
+    noTask.classList.add('hide-no-task');
+    noTask.classList.remove('show-no-task');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
     const search = searchQuery || '';
@@ -115,8 +139,11 @@ function fetchPendingTasks(status, searchQuery) {
             const createdAt = document.createElement("h5"); 
             createdAt.textContent = `Created: ${task.createdAt}`;
 
-            const pendingTask = document.createElement("div")
-            pendingTask.classList.add("pending-task")
+            const pendingTask = document.createElement("div");
+            pendingTask.classList.add("pending-task");
+
+            const noTask = document.createElement('hi');
+            noTask.textContent= 'No Task Found';
 
             const taskBtnContainer = document.createElement("div");
             taskBtnContainer.classList.add("main-task-btn_container");
@@ -163,9 +190,13 @@ function fetchPendingTasks(status, searchQuery) {
                 taskNameInputDOM.value = taskName;
                 editingTask = true;                
             });
-
+        
             pendingTask.append(createdAt, name, status, taskBtnContainer);
             
+            // if(pendingTasks.length === 0 || !pendingTasks){
+            //     noTask.classList.remove('hide-no-task');
+            //     noTask.classList.add('show-no-task');
+            // }
             
             return pendingTaskContainer.append(pendingTask)
         
@@ -175,6 +206,13 @@ function fetchPendingTasks(status, searchQuery) {
             // }
             
         })
+        if(pendingTasks.length === 0 || !pendingTasks){
+                noTask.classList.remove('hide-no-task');
+                noTask.classList.add('show-no-task');
+            }else{
+                noTask.classList.add('hide-no-task');
+                noTask.classList.remove('show-no-task');
+            }
 
         loading.classList.remove('show-loading');
         loading.classList.add('hide-loading');
@@ -189,6 +227,8 @@ function fetchCurrentTasks(status, searchQuery) {
     const search = searchQuery || '';
     loading.classList.add('show-loading');
     loading.classList.remove('hide-loading');
+    noTask.classList.add('hide-no-task');
+    noTask.classList.remove('show-no-task');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
     axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
@@ -199,9 +239,9 @@ function fetchCurrentTasks(status, searchQuery) {
         .then(response => {
             const {tasks, numberOfPages, totalTasks} = response.data;
 
-            let currentTask;
-            currentTask = tasks;
-            currentTask.map((task) =>{
+            let currentTasks;
+            currentTasks = tasks;
+            currentTasks.map((task) =>{
             const taskId = task._id;
             const currentTaskName = task.taskName;
             const name = document.createElement("h3"); 
@@ -257,6 +297,13 @@ function fetchCurrentTasks(status, searchQuery) {
 
         loading.classList.remove('show-loading');
         loading.classList.add('hide-loading');
+        if(currentTasks.length === 0 || !currentTasks){
+                noTask.classList.remove('hide-no-task');
+                noTask.classList.add('show-no-task');
+            }else{
+                noTask.classList.add('hide-no-task');
+                noTask.classList.remove('show-no-task');
+            }
 
         })
         .catch(error => console.error(error))
@@ -267,6 +314,8 @@ function fetchCompletedTasks(status, searchQuery) {
     const search = searchQuery || '';
     loading.classList.add('show-loading');
     loading.classList.remove('hide-loading');
+    noTask.classList.add('hide-no-task');
+    noTask.classList.remove('show-no-task');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
     axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
@@ -277,9 +326,9 @@ function fetchCompletedTasks(status, searchQuery) {
         .then(response => {
             const {tasks, numberOfPages, totalTasks} = response.data;
 
-            let completedTask;
-            completedTask = tasks
-            completedTask.map((task) =>{
+            let completedTasks;
+            completedTasks = tasks
+            completedTasks.map((task) =>{
             const taskId = task._id;
             const name = document.createElement("h3"); 
             name.textContent = `${task.taskName}`;
@@ -315,11 +364,20 @@ function fetchCompletedTasks(status, searchQuery) {
 
         loading.classList.remove('show-loading');
         loading.classList.add('hide-loading');
+        if(completedTasks.length === 0 || !completedTasks){
+                noTask.classList.remove('hide-no-task');
+                noTask.classList.add('show-no-task');
+            }else{
+                noTask.classList.add('hide-no-task');
+                noTask.classList.remove('show-no-task');
+            }
 
         })
         .catch(error => console.error(error))
 }
 function fetchTasks () {
+        noTask.classList.add('hide-no-task');
+        noTask.classList.remove('show-no-task');
         const localStorageUser = localStorage.getItem('user');
         const user = JSON.parse(localStorageUser);
         axios.get('http://localhost:5000/api/v1/tasks/getAllTasks', {
@@ -339,8 +397,6 @@ function fetchTasks () {
 
 };
 fetchTasks();
-
-
 
 submitTaskBtn.addEventListener('click', (e) =>{
     e.preventDefault();
@@ -409,6 +465,9 @@ pendingTaskBtn.addEventListener("click", () =>{
     currentTaskBtn.classList.add("hide-border");
     completedTaskBtn.classList.remove("show-border");
     completedTaskBtn.classList.add("hide-border");
+    while (pendingTaskContainer.hasChildNodes()) {
+     pendingTaskContainer.removeChild(pendingTaskContainer.firstChild);
+    }
     fetchPendingTasks('pending');
     fetchTasks();
 })
@@ -428,6 +487,9 @@ currentTaskBtn.addEventListener("click", () =>{
     pendingTaskBtn.classList.add("hide-border");
     completedTaskBtn.classList.remove("show-border");
     completedTaskBtn.classList.add("hide-border");
+    while (currentTaskContainer.hasChildNodes()) {
+     currentTaskContainer.removeChild(currentTaskContainer.firstChild);
+    }
     fetchCurrentTasks('current');
     fetchTasks();
 })
@@ -447,6 +509,9 @@ completedTaskBtn.addEventListener("click", () =>{
     currentTaskBtn.classList.add("hide-border");
     pendingTaskBtn.classList.remove("show-border");
     pendingTaskBtn.classList.add("hide-border");
+    while (completedTaskContainer.hasChildNodes()) {
+     completedTaskContainer.removeChild(completedTaskContainer.firstChild);
+    }
     fetchCompletedTasks('completed');
     fetchTasks();
 })

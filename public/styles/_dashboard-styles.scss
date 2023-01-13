@@ -7,6 +7,13 @@ $btnColor-1: #345eeb;
 .hide-loading{
     display: none;
 }
+.show-no-task{
+    display: inline;
+    margin-left: 10px;
+}
+.hide-no-task{
+    display: none;
+}
 .dashboard{
     background-color: #e9f4f7;
 }
