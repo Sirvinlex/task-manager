@@ -184,7 +184,7 @@ $btnColor-1: #345eeb;
     display: flex;
 }
 .pending-task{
-    height: 150px;
+    height: 180px;
     width: 250px;
     background-color: rgba(242, 76, 61, 0.5);
     border-radius: 5px;
@@ -193,7 +193,7 @@ $btnColor-1: #345eeb;
     position: relative;
 }
 .current-task{
-    height: 150px;
+    height: 180px;
     width: 250px;
     background-color: rgba(245, 218, 86, 0.5);
     border-radius: 5px;
@@ -202,7 +202,7 @@ $btnColor-1: #345eeb;
     position: relative;
 }
 .completed-task{
-    height: 150px;
+    height: 180px;
     width: 250px;
     background-color: rgba(153, 242, 196, 0.5);
     border-radius: 5px;

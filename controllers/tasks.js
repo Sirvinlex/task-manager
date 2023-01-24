@@ -5,7 +5,6 @@ const Task = require("../models/task");
 const getAllTasks = async(req, res) =>{
     const { status, search } = req.query;
     const queryObject = {createdBy: req.user.userId,};
-console.log(status, search)
     try {
         
         if (search) {
@@ -80,14 +79,10 @@ const deleteTask = async(req, res) =>{
         res.status(400).json(error);
     }
 };
-const updateToCompletedTask = async(req, res) =>{
-    try {
-    } catch (error) {
-    }
-};
+
 
 
 module.exports = {
-    getAllTasks, updateToCompletedTask, updateTask, deleteTask, createTask
+    getAllTasks, updateTask, deleteTask, createTask
 }
 

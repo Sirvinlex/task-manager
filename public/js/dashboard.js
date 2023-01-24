@@ -46,7 +46,7 @@ function getUser() {
 };
 getUser();
 
-function deleteTask(taskId,) {
+function deleteTask(taskId, target, status) {
                 const localStorageUser = localStorage.getItem('user');
                 const user = JSON.parse(localStorageUser);
                 axios.delete(`http://localhost:5000/api/v1/tasks/deleteTask/${taskId}`, {
@@ -55,12 +55,17 @@ function deleteTask(taskId,) {
                     }
                  })
                 .then(response => {
-
+                    if(status === 'completed'){
+                        target.parentElement.remove();
+                    }else{
+                        target.parentElement.parentElement.remove();
+                    }
+                    fetchTasks();
                 }).catch((error) => console.error(error))
 
 };
 
-function editTask(taskId, status, taskName) {
+function editTask(taskId, status, taskName,) {
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
     axios.patch(`http://localhost:5000/api/v1/tasks/updateTask/${taskId}`, {status, taskName}, {
@@ -69,6 +74,12 @@ function editTask(taskId, status, taskName) {
         }
         })
     .then(response => {
+        if(status === 'current'){
+            showCurrentTasks();
+        }
+        if(status === 'completed'){
+            showCompletedTasks();
+        }
 
     }).catch((error) => console.log(error))
 
@@ -137,8 +148,9 @@ function fetchPendingTasks(status, searchQuery) {
             status.textContent = `Status: ${task.status}`;
 
             const createdAt = document.createElement("h5"); 
-            createdAt.textContent = `Created: ${task.createdAt}`;
-
+            // createdAt.textContent = `Created: ${task.createdAt}`;
+            createdAt.textContent = `Created: ${moment(task.createdAt).format('MMMM Do YYYY, h:mm:ss a')}`;
+                
             const pendingTask = document.createElement("div");
             pendingTask.classList.add("pending-task");
 
@@ -168,16 +180,16 @@ function fetchPendingTasks(status, searchQuery) {
 
             taskBtnContainer.append(startTaskBtn, editTaskBtn, deleteTaskBtn);
             deleteTaskBtn.addEventListener('click', (e) =>{
+                const target = e.target;
                 const taskId = e.target.id;
                 
-                deleteTask(taskId,);
+                deleteTask(taskId, target);
             });
-
             startTaskBtn.addEventListener('click', (e) =>{
                 const taskId = e.target.id;
                 const status = 'current';
                 const taskName = e.target.name;
-                editTask(taskId, status, taskName);
+                editTask(taskId, status, taskName, );
             });
 
             editTaskBtn.addEventListener('click', (e) =>{
@@ -251,10 +263,10 @@ function fetchCurrentTasks(status, searchQuery) {
             status.textContent = `Status: ${task.status}`;
 
             const updatedAt = document.createElement("h5"); 
-            updatedAt.textContent = `Started: ${task.updatedAt}`;
+            updatedAt.textContent = `Started: ${moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ss a')}`;
 
             const createdAt = document.createElement("h5"); 
-            createdAt.textContent = `Created: ${task.createdAt}`;
+            createdAt.textContent = `Created: ${moment(task.createdAt).format('MMMM Do YYYY, h:mm:ss a')}`;
 
             const currentTask = document.createElement("div");
             currentTask.classList.add("current-task");
@@ -276,15 +288,17 @@ function fetchCurrentTasks(status, searchQuery) {
             taskBtnContainer.append(completeTaskBtn, deleteTaskBtn);
 
             deleteTaskBtn.addEventListener('click', (e) =>{
+                const target = e.target;
                 const taskId = e.target.id;
-                deleteTask(taskId);
+                deleteTask(taskId, target);
             });
 
             completeTaskBtn.addEventListener('click', (e) =>{
                 const taskId = e.target.id;
                 const status = 'completed';
                 const taskName = e.target.name;
-                editTask(taskId, status, taskName);
+                editTask(taskId, status, taskName, );
+                
             });
 
             currentTask.append(createdAt, name, status, updatedAt, taskBtnContainer);
@@ -337,10 +351,10 @@ function fetchCompletedTasks(status, searchQuery) {
             status.textContent = `Status: ${task.status}`;
 
             const updatedAt = document.createElement("h5"); 
-            updatedAt.textContent = `Completed Task On: ${task.updatedAt}`;
+            updatedAt.textContent = `Completed Task On: ${moment(task.updatedAt).format('MMMM Do YYYY, h:mm:ss a')}`;
 
             const createdAt = document.createElement("h5"); 
-            createdAt.textContent = `Created: ${task.createdAt}`;
+            createdAt.textContent = `Created: ${moment(task.createdAt).format('MMMM Do YYYY, h:mm:ss a')}`;
 
             const completedTask = document.createElement("div");
             completedTask.classList.add("completed-task");
@@ -353,8 +367,10 @@ function fetchCompletedTasks(status, searchQuery) {
             completedTask.append(createdAt, name, status, updatedAt, deleteTaskBtn);
 
             deleteTaskBtn.addEventListener('click', (e) =>{
+                const status = 'completed'
+                const target = e.target;
                 const taskId = e.target.id;
-                deleteTask(taskId);
+                deleteTask(taskId, target, status);
             })
 
             return (
@@ -447,6 +463,10 @@ createTaskBtn.addEventListener("click", () =>{
 closeTaskForm.addEventListener("click", () =>{
     createTaskFormContainer.classList.remove("show-task-form");
     createTaskFormContainer.classList.add("hide-task-form");
+    while (pendingTaskContainer.hasChildNodes()) {
+     pendingTaskContainer.removeChild(pendingTaskContainer.firstChild);
+    };
+    fetchPendingTasks('pending');
     })
 
 pendingTaskBtn.addEventListener("click", () =>{
@@ -515,3 +535,50 @@ completedTaskBtn.addEventListener("click", () =>{
     fetchCompletedTasks('completed');
     fetchTasks();
 })
+
+function showCurrentTasks() {
+    isPendingTask = false;
+    isCurrentTask = true;
+    isCompletedTask = false;
+    currentTaskContainer.classList.add("show-task");
+    currentTaskContainer.classList.remove("hide-task");
+    pendingTaskContainer.classList.remove("show-task");
+    pendingTaskContainer.classList.add("hide-task");
+    completedTaskContainer.classList.remove("show-task");
+    completedTaskContainer.classList.add("hide-task");
+    currentTaskBtn.classList.remove("hide-border");
+    currentTaskBtn.classList.add("show-border");
+    pendingTaskBtn.classList.remove("show-border");
+    pendingTaskBtn.classList.add("hide-border");
+    completedTaskBtn.classList.remove("show-border");
+    completedTaskBtn.classList.add("hide-border");
+    while (currentTaskContainer.hasChildNodes()) {
+     currentTaskContainer.removeChild(currentTaskContainer.firstChild);
+    }
+    fetchCurrentTasks('current');
+    fetchTasks();
+
+};
+
+function showCompletedTasks() {
+    isPendingTask = false;
+    isCurrentTask = false;
+    isCompletedTask = true;
+    completedTaskContainer.classList.add("show-task");
+    completedTaskContainer.classList.remove("hide-task");
+    pendingTaskContainer.classList.remove("show-task");
+    pendingTaskContainer.classList.add("hide-task");
+    currentTaskContainer.classList.remove("show-task");
+    currentTaskContainer.classList.add("hide-task");
+    completedTaskBtn.classList.remove("hide-border");
+    completedTaskBtn.classList.add("show-border");
+    currentTaskBtn.classList.remove("show-border");
+    currentTaskBtn.classList.add("hide-border");
+    pendingTaskBtn.classList.remove("show-border");
+    pendingTaskBtn.classList.add("hide-border");
+    while (completedTaskContainer.hasChildNodes()) {
+     completedTaskContainer.removeChild(completedTaskContainer.firstChild);
+    }
+    fetchCompletedTasks('completed');
+    fetchTasks();
+}
