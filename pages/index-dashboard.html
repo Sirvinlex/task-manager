@@ -7,7 +7,73 @@
     <link rel="stylesheet" href="../styles/style.css" />
     <title>Dashboard</title>
 </head>
-<body class="dashboard">
+<body>
+    <div class="auth-page show-page">
+        <div class="home-page-container">
+            <div class="home-grid-one">
+                <h1>Task Manager</h1>
+                <p>An easy way to organize and manage your tasks. Task Manager is for for everyone, both personal and group
+                    works</p>
+                <button class="get-started-btn" type="button">Get Started</button>
+                <img class="home-img-1" src="../images/cartoon-man-working-with-laptop-main.jpg"
+                    alt="animated image of man working" />
+            </div>
+            <div class="home-grid-two">
+                <img class="home-img-2" src="../images/pupils-doing-homework-together.jpg"
+                    alt="animated image of man working" />
+                <h3>Stay Organized while handling your tasks</h3>
+                <button class="register-btn" type="button">Login/Register</button>
+            </div>
+        </div>
+        <div class="reg-page-container">
+            <div class="form-container">
+                <hr />
+                <h1 class="logo">Task Manager</h1>
+                <h1 class="form-title">Login</h1>
+                <h5 class="tes"></h5>
+                <div class="personal-account-form show-form">
+                    <form class="auth-form">
+                        <div class="login-form show-form">
+                            <p>
+                                <label for='login-email'>Email</label>
+                                <input type='email' id='login-email' class="login-email" />
+                            </p>
+                            <p>
+                                <label for='login-password'>Password</label>
+                                <input type='password' id='login-password' class="login-password" />
+                            </p>
+                        </div>
+        
+                        <div class="register-form hide-form">
+                            <p>
+                                <label for='name'>Name</label>
+                                <input type='text' id='name' class="register-name" />
+                            </p>
+                            <p>
+                                <label for='email'>Email</label>
+                                <input type='email' id='email' class="register-email" />
+                            </p>
+                            <p>
+                                <label for='password'>Password</label>
+                                <input type='password' id='password' class="register-password" />
+                            </p>
+                        </div>
+                        <button type="submit" class="submit-btn">Submit</button>
+                    </form>
+                    <div>
+                        <p class="form-toggle-1 show-form">
+                            <span>Don't have an account? <button class="toggle-form_btn1" type="button">Register</button></span>
+                        </p>
+                        <p class="form-toggle-2 hide-form">
+                            <span>Already have an account? <button class="toggle-form_btn2" type="button">Login</button></span>
+                        </p>
+                    </div>
+                </div>
+        
+            </div>
+        </div>
+    </div>
+    <div class="dashboard hide-page">
     <nav class="dashboard-nav">
         <div class="btn-user-container">
             <button class="create-task-btn" type="button">Create New Task</button>
@@ -59,38 +125,16 @@
             <h1 class="loading show-loading">Loading Tasks...</h1>
             <h1 class="no-task hide-no-task">No Task Found</h1>
             <div class="pending-tasks-container show-task">
-                <!-- <div class="pending-task">
-                    <h5 id="pending-task-createdAt">Created: 22, Dec. 2022</h5>
-                    <h4 id="pending-task-name">Build Admin Dashboard for a client</h4>
-                    <h6 id="pending-task-status">Status: Pending</h6>
-                    <div class="main-task-btn_container">
-                        <button class="task-btn" type="button">Start Task</button>
-                        <button class="delete-task-btn" type="button">Delete</button>
-                    </div>
-                </div> -->
+                
             </div>
             <div class="current-tasks-container hide-task">
-                <!-- <div class="current-task">
-                    <h5>Created: 22, Dec. 2022</h5>
-                    <h4>Build Admin Dashboard for a client</h4>
-                    <h5>Started: 27, Dec, 2022</h5>
-                    <h6>Status: Current</h6>
-                    <div class="main-task-btn_container">
-                        <button class="task-btn" type="button">Start Task</button>
-                        <button class="delete-task-btn" type="button">Delete</button>
-                    </div>
-                </div> -->
+                
             </div>
             <div class="completed-tasks-container hide-task">
-                <!-- <div class="completed-task">
-                    <h5>Created: 22, Dec. 2022</h5>
-                    <h4>Build Admin Dashboard for a client</h4>
-                    <h5>Completed Task On: 27, Dec, 2022</h5>
-                    <h6>Status: Completed</h6>
-                    <button class="delete-task-btn" type="button">Delete</button>
-                </div> -->
+                
             </div>
         </div>
+    </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"
         integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ=="

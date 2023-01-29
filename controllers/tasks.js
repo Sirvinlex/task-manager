@@ -1,4 +1,3 @@
-const { create, findOne, findOneAndUpdate, findByIdAndUpdate } = require("../models/task");
 const Task = require("../models/task");
 
 
@@ -39,8 +38,6 @@ const getAllTasks = async(req, res) =>{
 
         res.status(200).json({ tasks, totalTasks, numOfPages, pendingTaskCount, currentTaskCount, completedTaskCount });
 
-        // const tasks = await Task.find({ createdBy: req.user.userId}).sort("createdAt");
-        // res.status(200).json({tasks});
     } catch (error) {
         res.status(400).json(error);
     }
@@ -49,7 +46,6 @@ const createTask = async(req, res) =>{
     req.body.createdBy = req.user.userId;
     const { taskName, status, createdBy } = req.body
     try {
-        // const task = await Task.create(req.body);
         const task = await Task.create({ taskName, status, createdBy });
         res.status(200).json({ task });
         

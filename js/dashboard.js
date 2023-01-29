@@ -1,3 +1,9 @@
+// dashboard constants
+const registerBtn = document.querySelector(".register-btn");
+const getStartedBtn = document.querySelector(".get-started-btn");
+const homePage = document.querySelector(".home-page-container");
+const authPage = document.querySelector(".auth-page");
+const dashboard = document.querySelector(".dashboard");
 const searchBtn1 = document.querySelector(".search-btn1");
 const searchBtn2 = document.querySelector(".search-btn2");
 const searchInputDOM1 = document.querySelector(".search-input1");
@@ -5,7 +11,6 @@ const searchInputDOM2 = document.querySelector(".search-input2");
 const pendingTaskContainer = document.querySelector(".pending-tasks-container");
 const currentTaskContainer = document.querySelector(".current-tasks-container");
 const completedTaskContainer = document.querySelector(".completed-tasks-container");
-// const pendingTask = document.querySelector(".pending-task");
 const pendingTaskBtn = document.querySelector(".pending-tasks-btn");
 const currentTaskBtn = document.querySelector(".current-tasks-btn");
 const completedTaskBtn = document.querySelector(".completed-tasks-btn");
@@ -24,23 +29,72 @@ const userName = document.querySelector(".user-name");
 const currentDate = document.querySelector(".date");
 const allTasks = document.querySelector(".all-tasks");
 
-// const deleteTaskBtn = document.querySelector("delete-task-btn");
+// auth constants
+const loginForm = document.querySelectorAll(".login-form");
+const registerForm = document.querySelectorAll(".register-form");
+const personalRegistration = document.querySelector(".personal-account-form");
+const groupRegistration = document.querySelector(".group-account-form");
+const formToggleBtn1 = document.querySelectorAll(".toggle-form_btn1");
+const formToggleBtn2 = document.querySelectorAll(".toggle-form_btn2");
+const formToggle1 = document.querySelectorAll(".form-toggle-1");
+const formToggle2 = document.querySelectorAll(".form-toggle-2");
+const personalAccountToggle = document.querySelector(".personal-account-toggle");
+const groupAccountToggle = document.querySelector(".group-account-toggle");
+const groupAccountToggleBtn = document.querySelector(".group-account-toggle_btn");
+const personalAccountToggleBtn = document.querySelector(".personal-account-toggle_btn");
+const formTitle = document.querySelector(".form-title");
+const authFormDOM = document.querySelector(".auth-form");
+const loginEmailInputDOM = document.querySelector(".login-email");
+const loginPasswordInputDOM = document.querySelector(".login-password");
+const registrationNameInputDOM = document.querySelector(".register-name");
+const registrationEmailInputDOM = document.querySelector(".register-email");
+const registrationPasswordInputDOM = document.querySelector(".register-password");
+const submitAuthDetailsBtn = document.querySelector(".submit-btn");
+const logoutBtn = document.querySelector(".logout-btn");
 
-// const page = pageNumber || '1';
-// const pageNumber = 1
-// const page = JSON.stringify(pageNumber)
-// const url = `http://localhost:5000/api/v1/tasks/getAllTasks?page=${page}`
 
 let editingTask = false;
 let editTaskId;
 let isPendingTask = true;
 let isCurrentTask = false;
 let isCompletedTask = false;
+const localStorageUser = localStorage.getItem('user');
+const user = JSON.parse(localStorageUser);
+
+
+function hideHomePage() {
+    homePage.classList.remove('home-page-container');
+    homePage.classList.add('hide-page');
+    
+};
+
+registerBtn.addEventListener('click', () => hideHomePage());
+getStartedBtn.addEventListener('click', () => hideHomePage());
+
+function loadPage() {
+    
+    const localStorageUser = localStorage.getItem('user');
+    const user = JSON.parse(localStorageUser);
+    if(user){
+        authPage.classList.remove('show-page');
+        authPage.classList.add('hide-page');
+        dashboard.classList.remove('hide-page');
+        dashboard.classList.add('show-page');
+        
+    }else{
+        authPage.classList.add('show-page');
+        authPage.classList.remove('hide-page');
+        dashboard.classList.add('hide-page');
+        dashboard.classList.remove('show-page');
+    }
+};
+
+loadPage();
 
 function getUser() {
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
-    userName.textContent = user.name
+    userName.textContent = user?.name
     const date = moment().format('DD-MM-YYYY');
     currentDate.textContent = date;
 };
@@ -129,12 +183,11 @@ function fetchPendingTasks(status, searchQuery) {
     const search = searchQuery || '';
     axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
             headers: {
-                authorization: `Bearer ${user.token}`
+                authorization: `Bearer ${user?.token}`
             }
         })
         .then(response => {
             const { tasks, numberOfPages, totalTasks} = response.data;
-            console.log(tasks)
             let pendingTasks;
             
             pendingTasks = tasks;
@@ -148,7 +201,6 @@ function fetchPendingTasks(status, searchQuery) {
             status.textContent = `Status: ${task.status}`;
 
             const createdAt = document.createElement("h5"); 
-            // createdAt.textContent = `Created: ${task.createdAt}`;
             createdAt.textContent = `Created: ${moment(task.createdAt).format('MMMM Do YYYY, h:mm:ss a')}`;
                 
             const pendingTask = document.createElement("div");
@@ -205,18 +257,8 @@ function fetchPendingTasks(status, searchQuery) {
         
             pendingTask.append(createdAt, name, status, taskBtnContainer);
             
-            // if(pendingTasks.length === 0 || !pendingTasks){
-            //     noTask.classList.remove('hide-no-task');
-            //     noTask.classList.add('show-no-task');
-            // }
-            
             return pendingTaskContainer.append(pendingTask)
-        
-            // else if (!tasks){
-            //     loading.classList.add('show-loading');
-            //     loading.classList.remove('hide-loading');
-            // }
-            
+
         })
         if(pendingTasks.length === 0 || !pendingTasks){
                 noTask.classList.remove('hide-no-task');
@@ -232,7 +274,7 @@ function fetchPendingTasks(status, searchQuery) {
         })
         .catch(error => console.error(error))
 }
-fetchPendingTasks('pending');
+if (user) fetchPendingTasks('pending');
 
 function fetchCurrentTasks(status, searchQuery) {
     
@@ -398,7 +440,7 @@ function fetchTasks () {
         const user = JSON.parse(localStorageUser);
         axios.get('http://localhost:5000/api/v1/tasks/getAllTasks', {
             headers: {
-                authorization: `Bearer ${user.token}`
+                authorization: `Bearer ${user?.token}`
             }
         })
         .then(response => {
@@ -412,7 +454,8 @@ function fetchTasks () {
         }).catch(error => console.error(error));
 
 };
-fetchTasks();
+
+if (user) fetchTasks();
 
 submitTaskBtn.addEventListener('click', (e) =>{
     e.preventDefault();
@@ -441,19 +484,6 @@ submitTaskBtn.addEventListener('click', (e) =>{
     }
     fetchTasks();
 })
-// submitTaskBtn.addEventListener('click', async (e) => {
-//     e.preventDefault();
-//     try {
-//         const taskName = taskNameInputDOM.value;
-//         const status = "Pending";
-//         console.log(taskName, status,)
-//         const { data } = axios.post('/api/v1/tasks/createTask', { taskName, status })
-//     } catch (error) {
-//         console.log(error)
-//     };
-//     taskNameInputDOM.value = "";
-// })
-    
 
 createTaskBtn.addEventListener("click", () =>{
     createTaskFormContainer.classList.remove("hide-task-form");
@@ -492,48 +522,10 @@ pendingTaskBtn.addEventListener("click", () =>{
     fetchTasks();
 })
 currentTaskBtn.addEventListener("click", () =>{
-    isPendingTask = false;
-    isCurrentTask = true;
-    isCompletedTask = false;
-    currentTaskContainer.classList.add("show-task");
-    currentTaskContainer.classList.remove("hide-task");
-    pendingTaskContainer.classList.remove("show-task");
-    pendingTaskContainer.classList.add("hide-task");
-    completedTaskContainer.classList.remove("show-task");
-    completedTaskContainer.classList.add("hide-task");
-    currentTaskBtn.classList.remove("hide-border");
-    currentTaskBtn.classList.add("show-border");
-    pendingTaskBtn.classList.remove("show-border");
-    pendingTaskBtn.classList.add("hide-border");
-    completedTaskBtn.classList.remove("show-border");
-    completedTaskBtn.classList.add("hide-border");
-    while (currentTaskContainer.hasChildNodes()) {
-     currentTaskContainer.removeChild(currentTaskContainer.firstChild);
-    }
-    fetchCurrentTasks('current');
-    fetchTasks();
+    showCurrentTasks();
 })
 completedTaskBtn.addEventListener("click", () =>{
-    isPendingTask = false;
-    isCurrentTask = false;
-    isCompletedTask = true;
-    completedTaskContainer.classList.add("show-task");
-    completedTaskContainer.classList.remove("hide-task");
-    pendingTaskContainer.classList.remove("show-task");
-    pendingTaskContainer.classList.add("hide-task");
-    currentTaskContainer.classList.remove("show-task");
-    currentTaskContainer.classList.add("hide-task");
-    completedTaskBtn.classList.remove("hide-border");
-    completedTaskBtn.classList.add("show-border");
-    currentTaskBtn.classList.remove("show-border");
-    currentTaskBtn.classList.add("hide-border");
-    pendingTaskBtn.classList.remove("show-border");
-    pendingTaskBtn.classList.add("hide-border");
-    while (completedTaskContainer.hasChildNodes()) {
-     completedTaskContainer.removeChild(completedTaskContainer.firstChild);
-    }
-    fetchCompletedTasks('completed');
-    fetchTasks();
+    showCompletedTasks();
 })
 
 function showCurrentTasks() {
@@ -582,3 +574,82 @@ function showCompletedTasks() {
     fetchCompletedTasks('completed');
     fetchTasks();
 }
+
+//auth functionalities
+
+let showLoginForm = true;
+authFormDOM.addEventListener('submit', (e) => {
+    e.preventDefault();
+        const name = registrationNameInputDOM.value;
+        const registrationEmail = registrationEmailInputDOM.value;
+        const registrationPassword = registrationPasswordInputDOM.value;
+        const loginEmail = loginEmailInputDOM.value;
+        const loginPassword = loginPasswordInputDOM.value;
+
+        if (showLoginForm){
+            axios.post('http://localhost:5000/api/v1/auth/loginUser', { email: loginEmail, password: loginPassword })
+            .then(response => {
+            const user = response.data;
+            localStorage.setItem('user', JSON.stringify(user));
+            loadPage();
+            alert(user.msg);
+            location.reload();
+            
+            })
+            .catch(error => alert(error.response.data.msg));
+        };
+        if (!showLoginForm){
+           axios.post('http://localhost:5000/api/v1/auth/registerUser', { name, email: registrationEmail, password: registrationPassword })
+            .then(response => {
+            const user = response.data;
+            localStorage.setItem('user', JSON.stringify(user));
+            loadPage();
+            alert(user.msg);
+            location.reload();
+            })
+            .catch(error => alert(error.response.data.msg));
+        };
+     
+})
+
+formToggleBtn1.forEach((btn) =>{
+    btn.addEventListener("click", () =>{
+        showLoginForm = false;
+        console.log('works')
+        loginForm.forEach((item) => item.classList.add("hide-form"));
+        loginForm.forEach((item) => item.classList.remove("show-form"));
+        registerForm.forEach((item) => item.classList.remove("hide-form"));
+        registerForm.forEach((item) => item.classList.add("show-form"));
+        formToggle1.forEach((item) => item.classList.remove("show-form"));
+        formToggle1.forEach((item) => item.classList.add("hide-form"));
+        formToggle2.forEach((item) => item.classList.add("show-form"));
+        formToggle2.forEach((item) => item.classList.remove("hide-form"));
+        formTitle.textContent = 'Register'
+})
+})
+
+formToggleBtn2.forEach((btn) => {
+    btn.addEventListener("click", () =>{
+        showLoginForm = true;
+        console.log('works')
+        loginForm.forEach((item) => item.classList.add("show-form"));
+        loginForm.forEach((item) => item.classList.remove("hide-form"));
+        registerForm.forEach((item) => item.classList.remove("show-form"));
+        registerForm.forEach((item) => item.classList.add("hide-form"));
+        formToggle1.forEach((item) => item.classList.remove("hide-form"));
+        formToggle1.forEach((item) => item.classList.add("show-form"));
+        formToggle2.forEach((item) => item.classList.add("hide-form"));
+        formToggle2.forEach((item) => item.classList.remove("show-form"));
+        formTitle.textContent = 'Login'
+    })
+})
+
+function logoutUser(){
+    localStorage.removeItem('user');
+    loadPage();
+    alert('Logout User Successfully');
+    location.reload();
+}
+logoutBtn.addEventListener('click', () =>{
+    logoutUser();
+})

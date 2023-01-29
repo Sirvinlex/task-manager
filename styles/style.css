@@ -71,6 +71,7 @@ hr {
   height: 30px;
   width: 100%;
   margin-top: 15px;
+  cursor: pointer;
 }
 
 .toggle-form_btn1, .toggle-form_btn2,
@@ -100,6 +101,14 @@ hr {
     margin: 0 auto;
   }
 }
+.show-page {
+  display: block;
+}
+
+.hide-page {
+  display: none;
+}
+
 .show-loading {
   display: inline;
   margin-left: 10px;
@@ -436,6 +445,14 @@ hr {
   }
 }
 .home-page-container {
+  position: absolute;
+  z-index: 1;
+  top: -60px;
+  left: -60px;
+  right: -60px;
+  bottom: -120px;
+  background-color: white;
+  padding: 30px;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: auto auto;

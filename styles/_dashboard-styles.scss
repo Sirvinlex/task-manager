@@ -1,5 +1,12 @@
 $backgroundColor: #fffffc;
 $btnColor-1: #345eeb;
+
+.show-page{
+    display: block;
+}
+.hide-page{
+    display: none;
+}
 .show-loading{
     display: inline;
     margin-left: 10px;
@@ -266,22 +273,7 @@ $btnColor-1: #345eeb;
         padding-top: 100px;
         padding-left: 50px;
     }
-    .pending-tasks-container{
-        // display: flex;
-        // flex-wrap: wrap;
-    }
-    .current-tasks-container{
-        // display: flex;
-        // flex-wrap: wrap;
-    }
-    .completed-tasks-container{
-        // display: flex;
-        // flex-wrap: wrap;
-    }
-    .all-tasks-container{
-        // display: flex;
-        // flex-wrap: wrap;
-    }
+
 }
 
 @media only screen and (min-width: 768px) {
