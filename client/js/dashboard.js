@@ -103,7 +103,7 @@ getUser();
 function deleteTask(taskId, target, status) {
                 const localStorageUser = localStorage.getItem('user');
                 const user = JSON.parse(localStorageUser);
-                axios.delete(`http://localhost:5000/api/v1/tasks/deleteTask/${taskId}`, {
+                axios.delete(`https://task-manager-niyt.onrender.com/api/v1/tasks/deleteTask/${taskId}`, {
                     headers: {
                         authorization: `Bearer ${user.token}`
                     }
@@ -122,7 +122,7 @@ function deleteTask(taskId, target, status) {
 function editTask(taskId, status, taskName,) {
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
-    axios.patch(`http://localhost:5000/api/v1/tasks/updateTask/${taskId}`, {status, taskName}, {
+    axios.patch(`https://task-manager-niyt.onrender.com/api/v1/tasks/updateTask/${taskId}`, {status, taskName}, {
         headers: {
             authorization: `Bearer ${user.token}`
         }
@@ -181,7 +181,7 @@ function fetchPendingTasks(status, searchQuery) {
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
     const search = searchQuery || '';
-    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
+    axios.get(`https://task-manager-niyt.onrender.com/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
             headers: {
                 authorization: `Bearer ${user?.token}`
             }
@@ -285,7 +285,7 @@ function fetchCurrentTasks(status, searchQuery) {
     noTask.classList.remove('show-no-task');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
-    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
+    axios.get(`https://task-manager-niyt.onrender.com/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
             headers: {
                 authorization: `Bearer ${user.token}`
             }
@@ -374,7 +374,7 @@ function fetchCompletedTasks(status, searchQuery) {
     noTask.classList.remove('show-no-task');
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
-    axios.get(`http://localhost:5000/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
+    axios.get(`https://task-manager-niyt.onrender.com/api/v1/tasks/getAllTasks?status=${status}&search=${search}`, {
             headers: {
                 authorization: `Bearer ${user.token}`
             }
@@ -438,7 +438,7 @@ function fetchTasks () {
         noTask.classList.remove('show-no-task');
         const localStorageUser = localStorage.getItem('user');
         const user = JSON.parse(localStorageUser);
-        axios.get('http://localhost:5000/api/v1/tasks/getAllTasks', {
+        axios.get('https://task-manager-niyt.onrender.com/api/v1/tasks/getAllTasks', {
             headers: {
                 authorization: `Bearer ${user?.token}`
             }
@@ -471,7 +471,7 @@ submitTaskBtn.addEventListener('click', (e) =>{
         editingTask = false;
         console.log(editingTask)
     }else{
-        axios.post('http://localhost:5000/api/v1/tasks/createTask', { taskName, status }, {
+        axios.post('https://task-manager-niyt.onrender.com/api/v1/tasks/createTask', { taskName, status }, {
             headers: {
                 authorization: `Bearer ${user.token}`
             }
@@ -587,7 +587,7 @@ authFormDOM.addEventListener('submit', (e) => {
         const loginPassword = loginPasswordInputDOM.value;
 
         if (showLoginForm){
-            axios.post('http://localhost:5000/api/v1/auth/loginUser', { email: loginEmail, password: loginPassword })
+            axios.post('https://task-manager-niyt.onrender.com/api/v1/auth/loginUser', { email: loginEmail, password: loginPassword })
             .then(response => {
             const user = response.data;
             localStorage.setItem('user', JSON.stringify(user));
@@ -599,7 +599,7 @@ authFormDOM.addEventListener('submit', (e) => {
             .catch(error => alert(error.response.data.msg));
         };
         if (!showLoginForm){
-           axios.post('http://localhost:5000/api/v1/auth/registerUser', { name, email: registrationEmail, password: registrationPassword })
+           axios.post('https://task-manager-niyt.onrender.com/api/v1/auth/registerUser', { name, email: registrationEmail, password: registrationPassword })
             .then(response => {
             const user = response.data;
             localStorage.setItem('user', JSON.stringify(user));
