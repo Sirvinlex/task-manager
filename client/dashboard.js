@@ -62,6 +62,7 @@ const localStorageUser = localStorage.getItem('user');
 const user = JSON.parse(localStorageUser);
 
 
+
 function hideHomePage() {
     homePage.classList.remove('home-page-container');
     homePage.classList.add('hide-page');
@@ -134,9 +135,11 @@ function editTask(taskId, status, taskName,) {
         if(status === 'completed'){
             showCompletedTasks();
         }
+        submitTaskBtn.disabled = false;
+        submitTaskBtn.textContent = 'Submit'
 
     }).catch((error) => console.log(error))
-
+        
 };
 
 function searchTask(searchQuery){
@@ -464,12 +467,13 @@ submitTaskBtn.addEventListener('click', (e) =>{
     const taskId = editTaskId;
     const localStorageUser = localStorage.getItem('user');
     const user = JSON.parse(localStorageUser);
+    submitTaskBtn.disabled = true;
+    submitTaskBtn.textContent = 'Loading...'
 
     if (editingTask){
         editTask(taskId, status, taskName);
         taskNameInputDOM.value = '';
         editingTask = false;
-        console.log(editingTask)
     }else{
         axios.post('https://task-manager-niyt.onrender.com/api/v1/tasks/createTask', { taskName, status }, {
             headers: {
@@ -479,6 +483,8 @@ submitTaskBtn.addEventListener('click', (e) =>{
         .then(response => {
         const result = response.data;
         taskNameInputDOM.value = '';
+        submitTaskBtn.disabled = false;
+        submitTaskBtn.textContent = 'Submit'
     })
     .catch(error => console.error(error));
     }
@@ -585,7 +591,11 @@ authFormDOM.addEventListener('submit', (e) => {
         const registrationPassword = registrationPasswordInputDOM.value;
         const loginEmail = loginEmailInputDOM.value;
         const loginPassword = loginPasswordInputDOM.value;
+        submitAuthDetailsBtn.textContent = 'Loading...'
+        submitAuthDetailsBtn.disabled = true;
 
+        // isAuthPending = true;
+// console.log(isAuthPending)
         if (showLoginForm){
             axios.post('https://task-manager-niyt.onrender.com/api/v1/auth/loginUser', { email: loginEmail, password: loginPassword })
             .then(response => {
