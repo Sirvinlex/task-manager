@@ -121,24 +121,30 @@ function deleteTask(taskId, target, status) {
 };
 
 function editTask(taskId, status, taskName,) {
-    const localStorageUser = localStorage.getItem('user');
-    const user = JSON.parse(localStorageUser);
-    axios.patch(`https://task-manager-niyt.onrender.com/api/v1/tasks/updateTask/${taskId}`, {status, taskName}, {
-        headers: {
-            authorization: `Bearer ${user.token}`
-        }
-        })
-    .then(response => {
-        if(status === 'current'){
-            showCurrentTasks();
-        }
-        if(status === 'completed'){
-            showCompletedTasks();
-        }
+    if (!taskId || !status || !taskName){
+        alert('Please provide all values');
         submitTaskBtn.disabled = false;
         submitTaskBtn.textContent = 'Submit'
+    }else{
+        const localStorageUser = localStorage.getItem('user');
+        const user = JSON.parse(localStorageUser);
+        axios.patch(`https://task-manager-niyt.onrender.com/api/v1/tasks/updateTask/${taskId}`, {status, taskName}, {
+            headers: {
+                authorization: `Bearer ${user.token}`
+            }
+            })
+        .then(response => {
+            if(status === 'current'){
+                showCurrentTasks();
+            }
+            if(status === 'completed'){
+                showCompletedTasks();
+            }
+            submitTaskBtn.disabled = false;
+            submitTaskBtn.textContent = 'Submit'
 
-    }).catch((error) => console.log(error))
+        }).catch((error) => console.log(error))
+    }
         
 };
 
@@ -475,7 +481,12 @@ submitTaskBtn.addEventListener('click', (e) =>{
         taskNameInputDOM.value = '';
         editingTask = false;
     }else{
-        axios.post('https://task-manager-niyt.onrender.com/api/v1/tasks/createTask', { taskName, status }, {
+        if (!taskId || !status || !taskName){
+            alert('Please provide all values');
+            submitTaskBtn.disabled = false;
+            submitTaskBtn.textContent = 'Submit'
+        }{
+            axios.post('https://task-manager-niyt.onrender.com/api/v1/tasks/createTask', { taskName, status }, {
             headers: {
                 authorization: `Bearer ${user.token}`
             }
@@ -485,8 +496,9 @@ submitTaskBtn.addEventListener('click', (e) =>{
         taskNameInputDOM.value = '';
         submitTaskBtn.disabled = false;
         submitTaskBtn.textContent = 'Submit'
-    })
-    .catch(error => console.error(error));
+        })
+        .catch(error => console.error(error));
+            }
     }
     fetchTasks();
 })
